@@ -22,15 +22,23 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-     - task: SonarSource.sonarqube.15B84CA1-B62F-4A2A-A403-89B77A063157.SonarQubePrepare@4
-       displayName: 'Prepare analysis on SonarQube'
-       inputs:
-         SonarQube: 'Sonar-TestNew'
-         scannerMode: CLI
-         configMode: manual
-         cliProjectKey: SonarGitHubAction
-         cliProjectName: 'SonarGitHubAction_#Tools'
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-     - task: SonarSource.sonarqube.6D01813A-9589-4B15-8491-8164AEB38055.SonarQubeAnalyze@4
-       displayName: 'Run Code Analysis'
+      # Another existing action, this one to checkout the repository
+      - name: 'Checkout repository on branch: ${{ github.REF }}'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.REF }}
+          fetch-depth: 0
+
+        name: 'Run an analysis of the master branch1'
+        env:
+          # to get access to secrets.SONAR_TOKEN, provide GITHUB_TOKEN
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        run: sonar-scanner
+          -Dsonar.host.url=${{ secrets.SONAR_URL }}
+          -Dsonar.login=${{ secrets.TOKEN_SONAR }}
+          -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+          -Dsonar.scm.provider=git
+          -Dsonar.java.binaries=/tmp
