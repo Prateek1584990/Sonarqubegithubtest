@@ -22,7 +22,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      
+      - name: Setup sonar scanner
+        uses: sonar-scanner-4.5.0.2216
 
       # Another existing action, this one to checkout the repository
       - name: 'Checkout repository on branch: ${{ github.REF }}'
