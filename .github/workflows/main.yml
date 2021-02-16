@@ -22,12 +22,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: sonar-scanner
-  # You may pin to the exact commit or the version.
-  # uses: Warchant/setup-sonar-scanner@11711243d0cc6c260466862b5f7abd902f77b495
-        uses: Warchant/setup-sonar-scanner@v3
+      
 
       # Another existing action, this one to checkout the repository
       - name: 'Checkout repository on branch: ${{ github.REF }}'
@@ -45,4 +40,3 @@ jobs:
           -Dsonar.login=${{ secrets.TOKEN_SONAR }}
           -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
           -Dsonar.scm.provider=git
-          -Dsonar.java.binaries=/tmp
